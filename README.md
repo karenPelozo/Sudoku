@@ -1,0 +1,3 @@
+# Sudoku
+
+Este sudoku esta sin terminar aun la logica lanza 0 en la resolucion...
