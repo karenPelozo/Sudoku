@@ -5,11 +5,18 @@ import sudoku.Logica.Sudoku;
 public class Main {
  public static void main(String []args) {
 	 Sudoku sudo= new Sudoku();
-	  sudo.generarSudoku(1);
-	 
-	  sudo.mostrarSudoku();
+	
+	  sudo.generarSudoku();
 	  System.out.print("\n");
-	  sudo.resolverSudoku();
 	  sudo.mostrarSudoku();
+	  System.out.print(sudo.resolverSudoku());
+	  sudo.generarSudoku();
+	  System.out.print("\n");
+	  sudo.mostrarSudoku();
+	  System.out.print(sudo.resolverSudoku());
+	  sudo.generarSudoku();
+	  System.out.print("\n");
+	  sudo.mostrarSudoku();
+	  System.out.print(sudo.resolverSudoku());
  }
 }

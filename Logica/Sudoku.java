@@ -1,13 +1,13 @@
 package sudoku.Logica;
 
-import java.security.SecureRandom;
+//import java.security.SecureRandom;
 import java.util.Random;
 
 public class Sudoku {
     
 	private int sudoku[][]= new int[9][9];
 	public Sudoku(){
-		int[][] sudok={ {1,1,0,0,0,0,0,0,0},
+		int[][] sudok={ {0,0,0,0,0,0,0,0,0},
 						{0,0,0,0,0,0,0,0,0},
 						{0,0,0,0,0,0,0,0,0},
 						{0,0,0,0,0,0,0,0,0},
@@ -27,53 +27,53 @@ public class Sudoku {
 		this.sudoku = sudoku;
 	}
 	//genero un sudoku con el nivel 
-	public void generarSudoku(int nivel){
-	   clearSudoku(); 
-	    int loop=0;
+	public void generarSudoku(){
+	   clearSudoku();
 	    int i=0,j=0;
-	    
-	    do {
-			for( i=0;i<sudoku.length;i++) {
-	    	  for( j=0; j<sudoku[0].length;j++) {
-	    		  int valor= valorRandom();
-	    		   if(validarFila(i,valor) && validarColumna(j,valor) && validarCuadrado(i,j,valor)) {
+	 
+		for( i=0;i<sudoku.length;i++) {
+			for( j=0; j<sudoku[0].length;j++) {
+	    		  int valor= valorRandomDos();
+	    		  if(sudoku[i][j]==0) { 
+	    			  if(validarGrilla(i,j,valor)) {
 	    			   sudoku[i][j]= valor;
 	    		   }
+	    			  if(!resolverSudoku()) {
+	    				  generarSudoku();
+	    			  }
+	    	       
+	    		  }
 	    	  }	    	  
 	      }
-			nivelSudoku(nivel);
-		loop++;
-		}while(loop!=9);
-		
 	
 		
+		
 }
-	// TERMINAR NO FUNCIONA SIGUE LANZANDO CEROS BESOS Y ABRAZOS PERRA
-public void resolverSudoku() {
-		int i=0,j=0;
-		int [] numeros= {1,2,3,4,5,6,7,8,9};
-		int num=0;
-		int loop=0;
-	do{
+	
+public boolean resolverSudoku() {
+		int i=0,j=0, num=0;
+		
 		for(i=0;i<sudoku.length;i++) {
 			for(j=0;j<sudoku[0].length;j++) {
-			     for(int c=0;c<numeros.length;c++) {
-			    	 num = numeros[c]; 
-			    	 if(sudoku[i][j]==0)
-			    	 	{	
-						if(validarFila(i,num) && validarColumna(j,num) && validarCuadrado(i,j,num)) {
+			      if(sudoku[i][j]==0) {
+			    	 for(num=1; num<=9 ; num++) {
+			    		 if(validarGrilla(i,j,num)) {
 							sudoku[i][j]=num;
-							}
-						}
-			    	 }
+							
+			    	     if (resolverSudoku()) {
+			    	    	 return true;
+			    	     }else {
+			    	    	 sudoku[i][j]=0;
+			    	     	}
+			    		}
+					}
+			      return false;
 				}
-			
-		}
-	   loop++;
-		
-	}while(loop!=9);
+		 }
+	}
 	
-}
+return true;
+}		    	
 public boolean validarFila(int i,int valor) {
 		for(int f=0;f<sudoku[i].length;f++) {
 			if(sudoku[i][f]==valor) 
@@ -89,11 +89,14 @@ public boolean validarColumna(int j,int valor) {
 
 		 return true;
  }
+public boolean validarGrilla(int i,int j, int valor) {
+	return validarFila(i,valor) && validarColumna(j,valor) && validarCuadrado(i,j,valor);
+			}
 public boolean validarCuadrado(int i,int j,int valor) {
-		  int posI= cuadradoActual(i);
-		  int posJ= cuadradoActual(j);
-		  for(int m = posI-3; m< posI;m++) {
-			  for(int f = posJ-3; f<posJ; f++) {
+		 int iCuadrado = i-i % 3;// me da el resto
+		 int jCuadrado = j-j % 3;
+		  for(int m =iCuadrado; m<iCuadrado+3;m++) {
+			  for(int f = jCuadrado; f<jCuadrado+3; f++) {
 				  if(sudoku[m][f]==valor) {
 					  return false;
 				  }
@@ -101,14 +104,8 @@ public boolean validarCuadrado(int i,int j,int valor) {
 		  }
 		 return true;
  }
-	//verifico la posicion de mi valor en el cuadrante 
-public int cuadradoActual(int p) {
-		if(p<=2)
-			return 3;
-		else if (p<=5)
-			return 6;
-		return 9;
-}
+	
+
 public void mostrarSudoku() {
 		for(int f=0;f<sudoku.length;f++) {
 			 System.out.print("\n");
@@ -118,12 +115,18 @@ public void mostrarSudoku() {
 			}
 		}
 }
-public int valorRandom() {
+/*public int valorRandom() {
 		SecureRandom numRandom= new SecureRandom();
 		numRandom.setSeed(new byte[1]);
 		int valor = 1+numRandom.nextInt(9);
 		return valor;
 }
+*/
+public int valorRandomDos() {
+	Random numRandom = new Random();
+	int num = 1+numRandom.nextInt(9);
+	return num;
+	}
 	
 public void clearSudoku() {
 		int i=0, j=0;
