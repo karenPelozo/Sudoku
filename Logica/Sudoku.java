@@ -56,7 +56,7 @@ public boolean resolverSudoku() {
 		for(i=0;i<sudoku.length;i++) {
 			for(j=0;j<sudoku[0].length;j++) {
 			      if(sudoku[i][j]==0) {
-			    	 for(num=1; num<=9 ; num++) {
+			    	 for(num=0; num<=9 ; num++) {
 			    		 if(validarGrilla(i,j,num)) {
 							sudoku[i][j]=num;
 							
